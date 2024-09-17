@@ -8,10 +8,69 @@ body {
   background-size: cover; /* Ensures the image covers the entire page */
   background-repeat: no-repeat; /* Prevents the image from repeating */
   background-position: center center; /* Centers the image */
-  min-height: 100vh; /* Sets the minimum height to 100% of the viewport height */
+  height: 100vh; /* Sets the minimum height to 100% of the viewport height */
+  display: grid;
+  grid-template-rows: 1fr 8fr 1fr;
 }
 
-.form-container {
-  display: none;
-  margin-top: 20px;
+div.books-container {
+  padding: 10px;
+  overflow-y: auto;
+  grid-row: 2/3;
+  grid-column: 1/2;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 150px);
+  grid-template-rows: repeat(auto-fit, 110px);
+  grid-auto-columns: auto;
+  grid-auto-rows: auto;
+  grid-gap: 20px;
+}
+
+div.book-card {
+  justify-items: center;
+  align-items: center;
+  width: 140px;
+  height: 100px;
+  background-color: rgba(197, 144, 51, 0.512);
+  border-radius: 5px;
+  padding: 10px;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+}
+
+div.library-title {
+  justify-self: center;
+  align-self: center;
+  color: white;
+  border-radius: 5px;
+  background-color: rgba(242, 242, 242, 0.447);
+  height: fit-content;
+  width: calc(100% - 50px);
+  grid-row: 1/2;
+  grid-column: 1/2;
+  font-size: 40px;
+  font-weight: 300;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  text-align: center;
+}
+
+button.add-book-button {
+  grid-row: 3/4;
+  grid-column: 1/2;
+}
+
+.add-book-button {
+  justify-self: center;
+  align-self: center;
+  margin-top: 5px;
+  width: 100px;
+  height: 30px;
+  background-color: #4caf50;
+  color: white;
+  font-weight: 300;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }

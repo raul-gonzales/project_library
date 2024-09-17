@@ -1,0 +1,17 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-image: url("images/reading_room.jpeg");
+  background-size: cover; /* Ensures the image covers the entire page */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  background-position: center center; /* Centers the image */
+  min-height: 100vh; /* Sets the minimum height to 100% of the viewport height */
+}
+
+.form-container {
+  display: none;
+  margin-top: 20px;
+}

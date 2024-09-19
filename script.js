@@ -73,8 +73,16 @@ library.forEach((book) => {
   bookReadStatusToggle.addEventListener("click", () => {
     if (book.readStatus === "To be read") {
       book.readStatus = "Read";
+      const index = library.indexOf(book);
+      if (index > -1) {
+        library[index].readStatus = "Read";
+      }
     } else if (book.readStatus === "Read") {
       book.readStatus = "To be read";
+      const index = library.indexOf(book);
+      if (index > -1) {
+        library[index].readStatus = "To be read";
+      }
     }
     bookReadStatus.textContent = `${book.readStatus}`;
   });
@@ -192,6 +200,10 @@ document
           bookData.readStatus = "To be read";
         }
         bookReadStatus.textContent = `${bookData.readStatus}`;
+        const index = library.indexOf(bookData);
+        if (index > -1) {
+          library[index].readStatus = bookData.readStatus;
+        }
       });
 
       bookCard.appendChild(bookTitle);

@@ -36,7 +36,7 @@ function listBooks() {
   }
 }
 
-// Sample books
+//------------------------------- Sample books-------------------------------------
 addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 295, "To be read");
 addBookToLibrary(
   "The Fellowship of the Ring",
@@ -46,8 +46,7 @@ addBookToLibrary(
 );
 addBookToLibrary("The Two Towers", "A.B.C Kenobi", 8875, "Read");
 addBookToLibrary("The Return of the King", "George Lucas", 123, "Read");
-
-listBooks();
+//---------------------------------------------------------------------------------
 
 // Initial book cards creation for myLibrary
 // Grab the books container
@@ -124,6 +123,7 @@ document
     }
 
     try {
+      addBookToLibrary(title, author, pages, readStatus);
       const bookData = {
         title,
         author,
@@ -166,4 +166,3 @@ document
       console.error(error.message);
     }
   });
-

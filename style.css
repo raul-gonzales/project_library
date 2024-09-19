@@ -13,7 +13,7 @@ button.add-book-button:focus,
 }
 
 body {
-  color: #ffff;
+  color: black;
   background-image: url("images/reading_room.jpeg");
   background-size: cover;
   background-repeat: no-repeat;
@@ -29,19 +29,20 @@ div.books-container {
   grid-row: 2/3;
   grid-column: 1/2;
   display: grid;
-  grid-template-columns: repeat(auto-fit, 200px);
+  grid-template-columns: repeat(auto-fit, 150px);
   grid-template-rows: repeat(auto-fit, 110px);
   grid-auto-columns: auto;
   grid-auto-rows: auto;
-  grid-gap: 20px;
+  grid-gap: 4%;
 }
 
 div.book-card {
+  background-image: url("images/opened_book.png");
+  background-size: cover;
   justify-items: center;
   align-items: center;
-  width: 190px;
+  width: 140px;
   height: 100px;
-  background-color: rgba(197, 144, 51, 0.512);
   border-radius: 5px;
   padding: 10px;
   display: grid;
@@ -76,7 +77,7 @@ button.add-book-button {
   margin-top: 5px;
   width: 150px;
   height: 50px;
-  background-color: #ff4040;
+  background-color: #047600;
   color: white;
   font-weight: 300;
   font-size: 16px;
@@ -86,7 +87,7 @@ button.add-book-button {
 }
 
 .add-book-button:hover {
-  background-color: #ff0000;
+  background-color: #00ce52;
 }
 
 .add-book-form {
@@ -173,10 +174,37 @@ button.add-book-button {
 .book-title,
 .book-author {
   text-align: center;
-  width: 170px;
+  width: 130px;
   height: auto;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.delete-button,
+.read-status-toggle {
+  color: white;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 12px;
+  justify-self: center; 
+  align-self: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
 
+.delete-button {
+  background-color: #ff5151;
+}
+
+.delete-button:hover {
+  background-color: #ff0000;
+}
+
+.read-status-toggle {
+  background-color: #3330e2;
+}
+
+.read-status-toggle:hover {
+  background-color: #5e68ff;
+}

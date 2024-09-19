@@ -67,6 +67,23 @@ myLibrary.forEach((book) => {
   bookPages.classList.add("book-pages");
   const bookReadStatus = document.createElement("div");
   bookReadStatus.classList.add("book-read-status");
+  const bookDeleteButton = document.createElement("button");
+  bookDeleteButton.classList.add("delete-button");
+  bookDeleteButton.textContent = "delete";
+  const bookReadStatusToggle = document.createElement("button");
+  bookReadStatusToggle.classList.add("read-status-toggle");
+  bookReadStatusToggle.textContent = "status";
+
+  // Add event listener to read status toggle button
+  bookReadStatusToggle.addEventListener("click", () => {
+    if (book.readStatus === "To be read") {
+      book.readStatus = "Read";
+    } else if (book.readStatus === "Read") {
+      book.readStatus = "To be read";
+    }
+    bookReadStatus.textContent = `${book.readStatus}`;
+  });
+
   // Fill out book elements
   bookTitle.textContent = `${book.title}`;
   bookTitle.appendChild(document.createElement("hr"));
@@ -74,12 +91,24 @@ myLibrary.forEach((book) => {
   bookAuthor.appendChild(document.createElement("hr"));
   bookPages.textContent = `${book.pages} pages`;
   bookReadStatus.textContent = `${book.readStatus}`;
+
   // Append book elements
   bookCard.appendChild(bookTitle);
   bookCard.appendChild(bookAuthor);
   bookCard.appendChild(bookPages);
   bookCard.appendChild(bookReadStatus);
+  bookCard.appendChild(bookDeleteButton);
+  bookCard.appendChild(bookReadStatusToggle);
   booksContainer.appendChild(bookCard);
+
+  // Add event listener to delete button
+  bookDeleteButton.addEventListener("click", () => {
+    const index = myLibrary.indexOf(book);
+    if (index > -1) {
+      myLibrary.splice(index, 1);
+    }
+    bookCard.remove();
+  });
 });
 
 document.querySelector(".add-book-button").addEventListener("click", () => {
@@ -152,17 +181,33 @@ document
       bookReadStatus.classList.add("book-read-status");
       bookReadStatus.textContent = bookData.readStatus;
 
+      const bookDeleteButton = document.createElement("button");
+      bookDeleteButton.classList.add("delete-button");
+      bookDeleteButton.textContent = "x";
+
       bookCard.appendChild(bookTitle);
       bookCard.appendChild(bookAuthor);
       bookCard.appendChild(bookPages);
       bookCard.appendChild(bookReadStatus);
+      bookCard.appendChild(bookDeleteButton);
 
       const booksContainer = document.querySelector(".books-container");
       booksContainer.appendChild(bookCard);
 
       document.querySelector(".add-book-form").style.visibility = "hidden";
       document.querySelector("form").reset();
+
+      // Add event listener to delete button
+      bookDeleteButton.addEventListener("click", () => {
+        const index = myLibrary.indexOf(bookData);
+        if (index > -1) {
+          myLibrary.splice(index, 1);
+        }
+        bookCard.remove();
+      });
     } catch (error) {
       console.error(error.message);
     }
-  });
+});
+
+

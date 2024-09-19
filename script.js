@@ -1,25 +1,26 @@
-const myLibrary = [];
+const library = [];
 
-function Book(title, author, pages, readStatus) {
-  if (!title || !author || !pages || !readStatus) {
-    throw new Error("All book properties must be provided");
+class Book {
+  constructor(title, author, pages, readStatus) {
+    if (!title || !author || !pages || !readStatus) {
+      throw new Error("All book properties must be provided");
+    }
+
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.readStatus = readStatus;
   }
 
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.readStatus = readStatus;
-  this.info = function () {
-    console.log(
-      `${this.title} by ${this.author}, ${this.pages} pages, ${this.readStatus}`
-    );
-  };
+  info() {
+    console.log(`${this.title} by ${this.author}, ${this.pages} pages, ${this.readStatus}`);
+  }
 }
 
 function addBookToLibrary(title, author, pages, readStatus) {
   try {
     const newBook = new Book(title, author, pages, readStatus);
-    myLibrary.push(newBook);
+    library.push(newBook);
   } catch (error) {
     console.error(error.message);
   }
@@ -27,7 +28,7 @@ function addBookToLibrary(title, author, pages, readStatus) {
 
 function listBooks() {
   try {
-    myLibrary.forEach((book) => {
+    library.forEach((book) => {
       const { title, author, pages, readStatus } = book;
       console.log(`${title} by ${author}, ${pages} pages, ${readStatus}`);
     });
@@ -38,24 +39,18 @@ function listBooks() {
 
 //------------------------------- Sample books-------------------------------------
 addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 295, "To be read");
-addBookToLibrary(
-  "The Fellowship of the Ring",
-  "Steven Spielberg",
-  3565,
-  "To be read"
-);
+addBookToLibrary("The Fellowship of the Ring", "Steven Spielberg", 3565, "To be read");
 addBookToLibrary("The Two Towers", "A.B.C Kenobi", 8875, "Read");
 addBookToLibrary("The Return of the King", "George Lucas", 123, "Read");
 //---------------------------------------------------------------------------------
 
-// Initial book cards creation for myLibrary
-// Grab the books container
+// Initial book cards creation for library
 const booksContainer = document.querySelector(".books-container");
 if (!booksContainer) {
   throw new Error("No books container found");
 }
-// Iterate through myLibrary and fill out book cards
-myLibrary.forEach((book) => {
+// Iterate through library and fill out book cards
+library.forEach((book) => {
   // Create book DOM elements
   const bookCard = document.createElement("div");
   bookCard.classList.add("book-card");
@@ -103,9 +98,9 @@ myLibrary.forEach((book) => {
 
   // Add event listener to delete button
   bookDeleteButton.addEventListener("click", () => {
-    const index = myLibrary.indexOf(book);
+    const index = library.indexOf(book);
     if (index > -1) {
-      myLibrary.splice(index, 1);
+      library.splice(index, 1);
     }
     bookCard.remove();
   });
@@ -183,13 +178,28 @@ document
 
       const bookDeleteButton = document.createElement("button");
       bookDeleteButton.classList.add("delete-button");
-      bookDeleteButton.textContent = "x";
+      bookDeleteButton.textContent = "delete";
+
+      const bookReadStatusToggle = document.createElement("button");
+      bookReadStatusToggle.classList.add("read-status-toggle");
+      bookReadStatusToggle.textContent = "status";
+
+      // Add event listener to read status toggle button
+      bookReadStatusToggle.addEventListener("click", () => {
+        if (bookData.readStatus === "To be read") {
+          bookData.readStatus = "Read";
+        } else if (bookData.readStatus === "Read") {
+          bookData.readStatus = "To be read";
+        }
+        bookReadStatus.textContent = `${bookData.readStatus}`;
+      });
 
       bookCard.appendChild(bookTitle);
       bookCard.appendChild(bookAuthor);
       bookCard.appendChild(bookPages);
       bookCard.appendChild(bookReadStatus);
       bookCard.appendChild(bookDeleteButton);
+      bookCard.appendChild(bookReadStatusToggle);
 
       const booksContainer = document.querySelector(".books-container");
       booksContainer.appendChild(bookCard);
@@ -199,15 +209,14 @@ document
 
       // Add event listener to delete button
       bookDeleteButton.addEventListener("click", () => {
-        const index = myLibrary.indexOf(bookData);
+        const index = library.indexOf(bookData);
         if (index > -1) {
-          myLibrary.splice(index, 1);
+          library.splice(index, 1);
         }
         bookCard.remove();
       });
     } catch (error) {
       console.error(error.message);
     }
-});
-
+  });
 

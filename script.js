@@ -5,7 +5,6 @@ class Book {
     if (!title || !author || !pages || !readStatus) {
       throw new Error("All book properties must be provided");
     }
-
     this.title = title;
     this.author = author;
     this.pages = pages;
@@ -13,9 +12,11 @@ class Book {
   }
 
   info() {
-    console.log(
-      `${this.title} by ${this.author}, ${this.pages} pages, ${this.readStatus}`
-    );
+    return `${this.title} by ${this.author}, ${this.pages} pages, ${this.readStatus}`;
+  }
+
+  toggleReadStatus() {
+    this.readStatus = this.readStatus === "To be read" ? "Read" : "To be read";
   }
 }
 
@@ -23,218 +24,109 @@ function addBookToLibrary(title, author, pages, readStatus) {
   try {
     const newBook = new Book(title, author, pages, readStatus);
     library.push(newBook);
+    return newBook;
   } catch (error) {
     console.error(error.message);
   }
 }
 
-function listBooks() {
-  try {
-    library.forEach((book) => {
-      const { title, author, pages, readStatus } = book;
-      console.log(`${title} by ${author}, ${pages} pages, ${readStatus}`);
-    });
-  } catch (error) {
-    console.error(error.message);
+function displayBooks() {
+  const booksContainer = document.querySelector(".books-container");
+  if (!booksContainer) {
+    throw new Error("No books container found");
   }
+  booksContainer.innerHTML = ""; // Clear previous entries
+  library.forEach(createBookCard);
 }
 
-//------------------------------- Sample books-------------------------------------
-addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 295, "To be read");
-addBookToLibrary(
-  "The Fellowship of the Ring",
-  "Steven Spielberg",
-  3565,
-  "To be read"
-);
-addBookToLibrary("The Two Towers", "A.B.C Kenobi", 8875, "Read");
-addBookToLibrary("The Return of the King", "George Lucas", 123, "Read");
-//---------------------------------------------------------------------------------
-
-// Initial book cards creation for library
-const booksContainer = document.querySelector(".books-container");
-if (!booksContainer) {
-  throw new Error("No books container found");
-}
-// Iterate through library and fill out book cards
-library.forEach((book) => {
-  // Create book DOM elements
+function createBookCard(book) {
   const bookCard = document.createElement("div");
   bookCard.classList.add("book-card");
-  const bookTitle = document.createElement("div");
-  bookTitle.classList.add("book-title");
-  const bookAuthor = document.createElement("div");
-  bookAuthor.classList.add("book-author");
-  const bookPages = document.createElement("div");
-  bookPages.classList.add("book-pages");
-  const bookReadStatus = document.createElement("div");
-  bookReadStatus.classList.add("book-read-status");
-  const bookDeleteButton = document.createElement("button");
-  bookDeleteButton.classList.add("delete-button");
-  bookDeleteButton.textContent = "delete";
-  const bookReadStatusToggle = document.createElement("button");
-  bookReadStatusToggle.classList.add("read-status-toggle");
-  bookReadStatusToggle.textContent = "status";
 
-  // Add event listener to delete button
-  bookDeleteButton.addEventListener("click", () => {
-    const index = library.indexOf(book);
-    if (index > -1) {// book is found in the books array
-      library.splice(index, 1);// delete the book and adjust the array
-    }
+  const elements = [
+    createBookElement("book-title", book.title),
+    createBookElement("book-author", book.author),
+    createBookElement("book-pages", `${book.pages} pages`),
+    createBookElement("book-read-status", book.readStatus),
+  ];
+
+  elements.forEach((element) => bookCard.appendChild(element));
+
+  const deleteButton = createButton("delete", () => {
+    library.splice(library.indexOf(book), 1);
     bookCard.remove();
   });
 
-  // Add event listener to read status toggle button
-  bookReadStatusToggle.addEventListener("click", () => {
-    if (book.readStatus === "To be read") {
-      book.readStatus = "Read";
-      const index = library.indexOf(book);
-      if (index > -1) {
-        library[index].readStatus = "Read";
-      }
-    } else if (book.readStatus === "Read") {
-      book.readStatus = "To be read";
-      const index = library.indexOf(book);
-      if (index > -1) {
-        library[index].readStatus = "To be read";
-      }
-    }
-    bookReadStatus.textContent = `${book.readStatus}`;
+  const toggleStatusButton = createButton("status", () => {
+    book.toggleReadStatus();
+    bookCard.querySelector(".book-read-status").textContent = book.readStatus;
   });
 
-  // Fill out book elements
-  bookTitle.textContent = `${book.title}`;
-  bookTitle.appendChild(document.createElement("hr"));
-  bookAuthor.textContent = `${book.author}`;
-  bookAuthor.appendChild(document.createElement("hr"));
-  bookPages.textContent = `${book.pages} pages`;
-  bookReadStatus.textContent = `${book.readStatus}`;
+  bookCard.appendChild(deleteButton);
+  bookCard.appendChild(toggleStatusButton);
 
-  // Append book elements
-  bookCard.appendChild(bookTitle);
-  bookCard.appendChild(bookAuthor);
-  bookCard.appendChild(bookPages);
-  bookCard.appendChild(bookReadStatus);
-  bookCard.appendChild(bookDeleteButton);
-  bookCard.appendChild(bookReadStatusToggle);
-  booksContainer.appendChild(bookCard);
-});
+  document.querySelector(".books-container").appendChild(bookCard);
+}
 
+function createBookElement(className, text) {
+  const element = document.createElement("div");
+  element.classList.add(className);
+  element.textContent = text;
+  element.appendChild(document.createElement("hr"));
+  return element;
+}
+
+function createButton(text, onClick) {
+  const button = document.createElement("button");
+  button.textContent = text;
+  button.classList.add(`${text}-button`);
+  button.addEventListener("click", onClick);
+  return button;
+}
+
+// Sample books
+const sampleBooks = [
+  ["The Hobbit", "J.R.R. Tolkien", 295, "To be read"],
+  ["The Fellowship of the Ring", "Steven Spielberg", 3565, "To be read"],
+  ["The Two Towers", "A.B.C Kenobi", 8875, "Read"],
+  ["The Return of the King", "George Lucas", 123, "Read"],
+];
+
+sampleBooks.forEach(([title, author, pages, readStatus]) =>
+  addBookToLibrary(title, author, pages, readStatus)
+);
+displayBooks();
+
+// Event Listeners for Modal
+const form = document.querySelector(".add-book-form");
 document.querySelector(".add-book-button").addEventListener("click", () => {
-  const form = document.querySelector(".add-book-form");
-  if (!form) {
-    throw new Error("No add book form found");
-  }
   form.style.visibility = "visible";
 });
 
 document.querySelector(".close-modal-button").addEventListener("click", () => {
-  const form = document.querySelector(".add-book-form");
-  if (!form) {
-    throw new Error("No add book form found");
-  }
   form.style.visibility = "hidden";
-  const formElements = document.querySelectorAll("form input, form select");
-  if (!formElements) {
-    throw new Error("No form elements found");
-  }
-  formElements.forEach((element) => {
-    element.value = "";
-  });
+  form.reset();
 });
 
 document
   .querySelector('button[type="submit"]')
   .addEventListener("click", (event) => {
-    event.preventDefault(); // Prevent the form from submitting
+    event.preventDefault();
 
-    // Get form values
     const title = document.querySelector("#title").value.trim();
     const author = document.querySelector("#author").value.trim();
-    const pages = document.querySelector("#pages").value.trim();
+    const pages = Number(document.querySelector("#pages").value.trim());
     const readStatus = document.querySelector("#readStatus").value;
 
-    // Check for empty fields
     if (!title || !author || !pages) {
-      alert("Please fill in all fields."); // Alert the user
-      return; // Exit the function if any field is empty
+      alert("Please fill in all fields.");
+      return;
     }
 
-    try {
-      addBookToLibrary(title, author, pages, readStatus);
-      const bookData = {
-        title,
-        author,
-        pages: Number(pages), // Convert pages to a number
-        readStatus,
-      };
-
-      const bookCard = document.createElement("div");
-      bookCard.classList.add("book-card");
-
-      const bookTitle = document.createElement("div");
-      bookTitle.classList.add("book-title");
-      bookTitle.textContent = bookData.title;
-      bookTitle.appendChild(document.createElement("hr"));
-
-      const bookAuthor = document.createElement("div");
-      bookAuthor.classList.add("book-author");
-      bookAuthor.textContent = bookData.author;
-      bookAuthor.appendChild(document.createElement("hr"));
-
-      const bookPages = document.createElement("div");
-      bookPages.classList.add("book-pages");
-      bookPages.textContent = `${bookData.pages} pages`;
-
-      const bookReadStatus = document.createElement("div");
-      bookReadStatus.classList.add("book-read-status");
-      bookReadStatus.textContent = bookData.readStatus;
-
-      const bookDeleteButton = document.createElement("button");
-      bookDeleteButton.classList.add("delete-button");
-      bookDeleteButton.textContent = "delete";
-
-      const bookReadStatusToggle = document.createElement("button");
-      bookReadStatusToggle.classList.add("read-status-toggle");
-      bookReadStatusToggle.textContent = "status";
-
-      // Add event listener to read status toggle button
-      bookReadStatusToggle.addEventListener("click", () => {
-        if (bookData.readStatus === "To be read") {
-          bookData.readStatus = "Read";
-        } else if (bookData.readStatus === "Read") {
-          bookData.readStatus = "To be read";
-        }
-        bookReadStatus.textContent = `${bookData.readStatus}`;
-        const index = library.indexOf(bookData);
-        if (index > -1) {
-          library[index].readStatus = bookData.readStatus;
-        }
-      });
-
-      bookCard.appendChild(bookTitle);
-      bookCard.appendChild(bookAuthor);
-      bookCard.appendChild(bookPages);
-      bookCard.appendChild(bookReadStatus);
-      bookCard.appendChild(bookDeleteButton);
-      bookCard.appendChild(bookReadStatusToggle);
-
-      const booksContainer = document.querySelector(".books-container");
-      booksContainer.appendChild(bookCard);
-
-      document.querySelector(".add-book-form").style.visibility = "hidden";
-      document.querySelector("form").reset();
-
-      // Add event listener to delete button
-      bookDeleteButton.addEventListener("click", () => {
-        const index = library.indexOf(bookData);
-        if (index > -1) {
-          library.splice(index, 1);
-        }
-        bookCard.remove();
-      });
-    } catch (error) {
-      console.error(error.message);
+    const newBook = addBookToLibrary(title, author, pages, readStatus);
+    if (newBook) {
+      createBookCard(newBook);
+      form.style.visibility = "hidden";
+      form.reset();
     }
   });

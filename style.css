@@ -181,7 +181,7 @@ button.add-book-button {
   white-space: nowrap;
 }
 .delete-button,
-.read-status-toggle {
+.status-button {
   color: white;
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-size: 12px;
@@ -201,10 +201,10 @@ button.add-book-button {
   background-color: #ff0000;
 }
 
-.read-status-toggle {
+.status-button {
   background-color: #3330e2;
 }
 
-.read-status-toggle:hover {
+.status-button:hover {
   background-color: #5e68ff;
 }

@@ -13,7 +13,9 @@ class Book {
   }
 
   info() {
-    console.log(`${this.title} by ${this.author}, ${this.pages} pages, ${this.readStatus}`);
+    console.log(
+      `${this.title} by ${this.author}, ${this.pages} pages, ${this.readStatus}`
+    );
   }
 }
 
@@ -39,7 +41,12 @@ function listBooks() {
 
 //------------------------------- Sample books-------------------------------------
 addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 295, "To be read");
-addBookToLibrary("The Fellowship of the Ring", "Steven Spielberg", 3565, "To be read");
+addBookToLibrary(
+  "The Fellowship of the Ring",
+  "Steven Spielberg",
+  3565,
+  "To be read"
+);
 addBookToLibrary("The Two Towers", "A.B.C Kenobi", 8875, "Read");
 addBookToLibrary("The Return of the King", "George Lucas", 123, "Read");
 //---------------------------------------------------------------------------------
@@ -68,6 +75,15 @@ library.forEach((book) => {
   const bookReadStatusToggle = document.createElement("button");
   bookReadStatusToggle.classList.add("read-status-toggle");
   bookReadStatusToggle.textContent = "status";
+
+  // Add event listener to delete button
+  bookDeleteButton.addEventListener("click", () => {
+    const index = library.indexOf(book);
+    if (index > -1) {// book is found in the books array
+      library.splice(index, 1);// delete the book and adjust the array
+    }
+    bookCard.remove();
+  });
 
   // Add event listener to read status toggle button
   bookReadStatusToggle.addEventListener("click", () => {
@@ -103,15 +119,6 @@ library.forEach((book) => {
   bookCard.appendChild(bookDeleteButton);
   bookCard.appendChild(bookReadStatusToggle);
   booksContainer.appendChild(bookCard);
-
-  // Add event listener to delete button
-  bookDeleteButton.addEventListener("click", () => {
-    const index = library.indexOf(book);
-    if (index > -1) {
-      library.splice(index, 1);
-    }
-    bookCard.remove();
-  });
 });
 
 document.querySelector(".add-book-button").addEventListener("click", () => {
@@ -231,4 +238,3 @@ document
       console.error(error.message);
     }
   });
-

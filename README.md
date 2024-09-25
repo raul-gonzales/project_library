@@ -4,7 +4,9 @@ Welcome to my Personal Library project! This is a simple web application designe
 
 Current look:
 
-![Current look of the webapp](site_state.png)
+![Current look of the webapp](images/site_state.png)
+
+
 
 ## Features
 

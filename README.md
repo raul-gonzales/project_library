@@ -2,6 +2,10 @@
 
 Welcome to my Personal Library project! This is a simple web application designed to help you keep track of books you’ve read and those you haven’t.
 
+Current look:
+
+![Current look of the webapp](site_state.png)
+
 ## Features
 
 - **Book Cards**: Display a list of books with details including name, author, number of pages, and read status.
